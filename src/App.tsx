@@ -1,13 +1,13 @@
 import React from "react";
 import "./App.css";
-import { ProjectListScreen } from "./screens/project-list";
+import { useAuth } from "./context/auth-context";
+import { AuthedApp } from "./authed-app";
+import { UnauthedApp } from "./unauthed-app";
 
 function App() {
-  return (
-    <div className="App">
-      <ProjectListScreen />
-    </div>
-  );
+  // 根据是否有 user 返回认证 app 页面或未认证 app 页面
+  const { user } = useAuth();
+  return <div className="App">{user ? <AuthedApp /> : <UnauthedApp />}</div>;
 }
 
 export default App;
