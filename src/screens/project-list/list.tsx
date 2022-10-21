@@ -4,16 +4,20 @@ import { Project } from "../../types/project";
 import { User } from "../../types/user";
 
 interface ListProps extends TableProps<Project> {
+  list: Project[];
   users: User[];
 }
-export const List = ({ users, ...props }: ListProps) => {
+export const List = ({ users, list }: ListProps) => {
   return (
     <Table
+      dataSource={list}
       rowKey={"id"}
       pagination={false}
       columns={[
         {
           title: "lal",
+          dataIndex: "name",
+          sorter: (a, b) => a.name.localeCompare(b.name),
           render(value, project) {
             return (
               <span>
