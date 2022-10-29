@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 
-export const isFalsy = (value) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
-export const cleanObject = (object) => {
+export const cleanObject = (object?: { [key: string]: unknown }) => {
+  if (!object) {
+    return {};
+  }
   const result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = object[key];
@@ -15,14 +18,14 @@ export const cleanObject = (object) => {
 };
 
 // custom hook
-export const useMount = (callback) => {
+export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
   }, []);
 };
 
-export const useDebounce = (value, delay) => {
-  const [debouncedValue, setDebouncedValue] = useState();
+export const useDebounce = <V>(value: V, delay?: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     const timeout = setTimeout(() => setDebouncedValue(value), delay);
     return () => clearTimeout(timeout);

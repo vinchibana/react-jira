@@ -1,32 +1,42 @@
 import React from "react";
 import { List } from "./list";
-import { useEffect, useState } from "react";
-import { cleanObject, useDebounce, useMount } from "../../utils";
-import { useHttp } from "../../utils/http";
-import { SearchPanel } from "./search-panel";
+import { useState } from "react";
+import { cleanObject, useDebounce } from "../../utils";
+import styled from "@emotion/styled";
+import { Typography } from "antd";
+import { useProjects } from "../../utils/project";
+import { useUsers } from "../../utils/user";
+import { Helmet } from "react-helmet";
 
 export const ProjectListScreen = () => {
   // 初始化用户列表、任务列表、搜索参数状态
-  const [list, setList] = useState([]);
-  const [users, setUsers] = useState([]);
   const [param, setParam] = useState({
     name: "",
     personId: "",
   });
-  const client = useHttp();
   const debouncedParam = useDebounce(param, 500);
+  const { data: users } = useUsers();
+  const {
+    error,
+    isLoading,
+    data: list,
+  } = useProjects(cleanObject(debouncedParam));
 
-  useEffect(() => {
-    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
-  }, [debouncedParam]);
-
-  useMount(() => {
-    client("users").then(setUsers);
-  });
-  // 获取 list 数据
   return (
-    <div>
-      <List users={users} list={list} />
-    </div>
+    <Container>
+      <Helmet>
+        <title>项目列表</title>
+      </Helmet>
+      <h1>项目列表</h1>
+      {/* List = ({ users, ...props }: ListProps */}
+      {error ? (
+        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+      ) : null}
+      <List users={users || []} dataSource={list || []} loading={isLoading} />
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 3.2rem;
+`;
