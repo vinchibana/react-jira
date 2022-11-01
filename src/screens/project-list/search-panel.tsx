@@ -1,8 +1,8 @@
 import React from "react";
 import { Project } from "../../types/project";
 import { User } from "../../types/user";
-import { Form, Input, Select } from "antd";
-const { Option } = Select;
+import { Form, Input } from "antd";
+import { UserSelect } from "../../components/user-select";
 
 interface SearchPanelProps {
   users: User[];
@@ -10,7 +10,7 @@ interface SearchPanelProps {
   setParam: (param: SearchPanelProps["param"]) => void;
 }
 
-export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
+export const SearchPanel = ({ param, setParam }: SearchPanelProps) => {
   return (
     <Form style={{ marginBottom: "2rem" }} layout={"inline"}>
       <Form.Item>
@@ -24,16 +24,13 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
         />
       </Form.Item>
       <Form.Item>
-        <Select
-          defaultValue={"负责人"}
-          onChange={(value: string) => {
-            setParam({
-              ...param,
-            });
+        <UserSelect
+          value={param.personId}
+          defaultOptionName={"负责人"}
+          onChange={(value) => {
+            setParam({ ...param, personId: value });
           }}
-        >
-          <Option value={param.name}>{param.name}</Option>
-        </Select>
+        />
       </Form.Item>
     </Form>
   );

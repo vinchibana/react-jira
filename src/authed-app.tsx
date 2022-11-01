@@ -2,24 +2,27 @@ import React from "react";
 import { ProjectListScreen } from "./screens/project-list";
 import { useAuth } from "./context/auth-context";
 import styled from "@emotion/styled";
-import { Row } from "./components/lib";
+import { ButtonNoPadding, Row } from "./components/lib";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
-import { Navigate, Route, Routes } from "react-router";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes } from "react-router";
 import { ProjectScreen } from "./screens/project";
+import { resetRoute } from "./utils";
+import { ProjectModal } from "./screens/project-list/project-modal";
+import { ProjectPopover } from "./components/project-popover";
 
 export const AuthedApp = () => {
   return (
     <Container>
       <PageHeader />
-      <ProjectListScreen />
-      <Router>
+      <Main>
         <Routes>
           <Route path={"/projects"} element={<ProjectListScreen />} />
           <Route path={"/projects/:projectId/*"} element={<ProjectScreen />} />
+          <Route index element={<ProjectListScreen />} />
         </Routes>
-      </Router>
+      </Main>
+      <ProjectModal />
     </Container>
   );
 };
@@ -29,8 +32,10 @@ const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <SoftwareLogo width={"18rem"} color={"rgb(38,132,255)"} />
-        <h2>项目</h2>
+        <ButtonNoPadding type={"link"} onClick={resetRoute}>
+          <SoftwareLogo width={"18rem"} color={"rgb(38,132,255)"} />
+        </ButtonNoPadding>
+        <ProjectPopover />
         <h2>成员</h2>
       </HeaderLeft>
       <HeaderRight>
@@ -69,3 +74,7 @@ const HeaderLeft = styled(Row)`
   align-items: center;
 `;
 const HeaderRight = styled.div``;
+const Main = styled.main`
+  display: flex;
+  overflow: hidden;
+`;

@@ -1,22 +1,43 @@
 import React from "react";
-import { Dropdown, Menu, Modal, Table, TableProps } from "antd";
+import { Dropdown, Table, TableProps, Menu } from "antd";
 import { Project } from "../../types/project";
 import { User } from "../../types/user";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { Pin } from "../../components/pin";
+import { useEditProject } from "../../utils/project";
+import { ButtonNoPadding } from "../../components/lib";
+import { useProjectModal } from "./util";
 
 // TableProps + users
 interface ListProps extends TableProps<Project> {
   users: User[];
+  refresh: () => void;
 }
 
 export const List = ({ users, ...props }: ListProps) => {
+  const { mutate } = useEditProject();
+  const pinProject = (id: number) => (pin: boolean) =>
+    mutate({ id, pin }).then(props.refresh);
+  const { open } = useProjectModal();
+
   return (
     <Table
       {...props}
       rowKey={"id"}
       pagination={false}
       columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return (
+              <Pin
+                checked={project.pin}
+                onCheckedChange={pinProject(project.id)}
+              />
+            );
+          },
+        },
         {
           title: "名称",
           sorter: (a, b) => a.name.localeCompare(b.name),
@@ -48,6 +69,25 @@ export const List = ({ users, ...props }: ListProps) => {
                   ? dayjs(project.created).format("YYYY-MM-DD HH:mm")
                   : "无"}
               </span>
+            );
+          },
+        },
+        {
+          render(value, project) {
+            return (
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key={"edit"}>
+                      <ButtonNoPadding onClick={() => open()} type={"link"}>
+                        编辑
+                      </ButtonNoPadding>
+                    </Menu.Item>
+                  </Menu>
+                }
+              >
+                <ButtonNoPadding type={"link"}>...</ButtonNoPadding>
+              </Dropdown>
             );
           },
         },
