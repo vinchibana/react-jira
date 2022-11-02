@@ -12,14 +12,13 @@ import { useProjectModal } from "./util";
 // TableProps + users
 interface ListProps extends TableProps<Project> {
   users: User[];
-  refresh: () => void;
 }
 
 export const List = ({ users, ...props }: ListProps) => {
   const { mutate } = useEditProject();
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(props.refresh);
-  const { open } = useProjectModal();
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const { startEdit } = useProjectModal();
+  const editProject = (id: number) => () => startEdit(id);
 
   return (
     <Table
@@ -42,7 +41,9 @@ export const List = ({ users, ...props }: ListProps) => {
           title: "名称",
           sorter: (a, b) => a.name.localeCompare(b.name),
           render(value, project) {
-            return <Link to={String(project.id)}>{project.name}</Link>;
+            return (
+              <Link to={`projects/${String(project.id)}`}>{project.name}</Link>
+            );
           },
         },
         {
@@ -79,10 +80,14 @@ export const List = ({ users, ...props }: ListProps) => {
                 overlay={
                   <Menu>
                     <Menu.Item key={"edit"}>
-                      <ButtonNoPadding onClick={() => open()} type={"link"}>
+                      <ButtonNoPadding
+                        onClick={editProject(project.id)}
+                        type={"link"}
+                      >
                         编辑
                       </ButtonNoPadding>
                     </Menu.Item>
+                    <Menu.Item key={"delete"}>删除</Menu.Item>
                   </Menu>
                 }
               >

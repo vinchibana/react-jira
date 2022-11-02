@@ -18,28 +18,22 @@ export const ProjectScreen = () => {
       <Aside>
         <Menu mode={"inline"} selectedKeys={[routeType]}>
           <Menu.Item key={"kanban"}>
-            <Link to={"/kanban"}>看板</Link>
+            <Link to={"kanban"}>看板</Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to={"/epic"}>任务组</Link>
+            <Link to={"epic"}>任务组</Link>
           </Menu.Item>
         </Menu>
       </Aside>
       <Main>
         <Routes>
-          <Route path={"/kanban"} element={<KanbanScreen />} />
-          <Route path={"/epic"} element={<EpicScreen />} />
+          <Route path={"kanban"} element={<KanbanScreen />} />
+          <Route path={"epic"} element={<EpicScreen />} />
         </Routes>
       </Main>
     </Container>
   );
 };
-
-const Main = styled.div`
-  box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  overflow: hidden;
-`;
 
 const Container = styled.div`
   display: grid;
@@ -50,4 +44,10 @@ const Container = styled.div`
 const Aside = styled.aside`
   background-color: rgb(244, 245, 247);
   display: flex;
+`;
+
+const Main = styled.div`
+  box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  overflow: hidden;
 `;

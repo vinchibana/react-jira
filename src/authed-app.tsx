@@ -69,10 +69,7 @@ const Header = styled(Row)`
   z-index: 1;
 `;
 
-const HeaderLeft = styled(Row)`
-  display: flex;
-  align-items: center;
-`;
+const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 const Main = styled.main`
   display: flex;

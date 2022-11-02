@@ -1,11 +1,22 @@
+import React, { ReactNode } from "react";
 import { AuthProvider } from "./auth-context";
-import { ReactNode } from "react";
-import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+
 export const AppProviders = ({ children }: { children: ReactNode }) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
+
   return (
-    <Router>
-      <AuthProvider children={children} />
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AuthProvider children={children}></AuthProvider>
+      </Router>
+    </QueryClientProvider>
   );
 };

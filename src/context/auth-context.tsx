@@ -5,6 +5,7 @@ import { http } from "../utils/http";
 import { useMount } from "../utils";
 import { useAsync } from "../utils/use-async";
 import { FullPageError, FullPageLoading } from "../components/lib";
+import { useQueryClient } from "react-query";
 
 export interface AuthForm {
   username: string;
@@ -42,9 +43,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setData: setUser,
     isIdle,
   } = useAsync<User | null>();
+
+  const queryClient = useQueryClient();
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
-  const logout = () => auth.logout().then(() => setUser(null));
+  const logout = () =>
+    auth.logout().then(() => {
+      setUser(null);
+      // 清空缓存
+      queryClient.clear();
+    });
 
   // 页面重新加载时，调用 bootstrapUser 从 localStorage 读取 token，匹配 me
   useMount(() => {
