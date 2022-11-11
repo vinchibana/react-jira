@@ -11,6 +11,7 @@ const useRouteType = () => {
   return units[units.length - 1];
 };
 
+//
 export const ProjectScreen = () => {
   const routeType = useRouteType();
   return (
@@ -20,7 +21,7 @@ export const ProjectScreen = () => {
           <Menu.Item key={"kanban"}>
             <Link to={"kanban"}>看板</Link>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item key={"epic"}>
             <Link to={"epic"}>任务组</Link>
           </Menu.Item>
         </Menu>

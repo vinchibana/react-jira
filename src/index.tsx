@@ -1,24 +1,21 @@
 import "./wdyr";
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { loadServer, DevTools } from "jira-dev-tool";
 import { AppProviders } from "./context";
 import "antd/dist/antd.less";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-
 loadServer(() => {
-  root.render(
+  ReactDOM.render(
     <React.StrictMode>
       <AppProviders>
         <DevTools />
         <App />
       </AppProviders>
-    </React.StrictMode>
+    </React.StrictMode>,
+    document.getElementById("root")
   );
 });
 

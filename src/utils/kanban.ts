@@ -36,3 +36,25 @@ export const useDeleteKanban = () => {
     { onSuccess: () => queryClient.invalidateQueries("kanbans") }
   );
 };
+
+export interface SortProps {
+  fromId: number;
+  referenceId: number;
+  type: "before" | "after";
+  fromKanbanId?: number;
+  toKanbanId?: number;
+}
+
+export const useReorderKanban = () => {
+  const client = useHttp();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (params: SortProps) =>
+      client("kanbans/reorder", {
+        data: params,
+        method: "POST",
+      }),
+    { onSuccess: () => queryClient.invalidateQueries("kanbans") }
+  );
+};

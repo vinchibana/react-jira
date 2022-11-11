@@ -1,6 +1,7 @@
 import { useHttp } from "./http";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Task } from "../types/task";
+import { SortProps } from "./kanban";
 
 export const useTasks = (param?: Partial<Task>) => {
   const client = useHttp();
@@ -51,6 +52,20 @@ export const useDeleteTask = () => {
     ({ id }: { id: number }) =>
       client(`tasks/${id}`, {
         method: "DELETE",
+      }),
+    { onSuccess: () => queryClient.invalidateQueries("tasks") }
+  );
+};
+
+export const useReorderTask = () => {
+  const client = useHttp();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (params: SortProps) =>
+      client("tasks/reorder", {
+        data: params,
+        method: "POST",
       }),
     { onSuccess: () => queryClient.invalidateQueries("tasks") }
   );

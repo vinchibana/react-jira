@@ -15,7 +15,6 @@ export const TaskModal = () => {
   const [form] = useForm();
   const { editingTaskId, editingTask, close } = useTaskModal();
   const { mutateAsync: editTask, isLoading: editLoading } = useEditTask();
-  console.log(editTask);
   const onCancel = () => {
     close();
     form.resetFields();
@@ -48,7 +47,7 @@ export const TaskModal = () => {
       cancelText={"取消"}
       confirmLoading={editLoading}
       title={"编辑任务"}
-      open={!!editingTaskId}
+      visible={!!editingTaskId}
       onCancel={onCancel}
       onOk={onOk}
       forceRender={true}

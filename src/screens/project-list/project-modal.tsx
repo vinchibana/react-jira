@@ -39,7 +39,7 @@ export const ProjectModal = () => {
     <Drawer
       forceRender={true}
       width={"100%"}
-      open={projectModalOpen}
+      visible={projectModalOpen}
       onClose={() => closeModal()}
     >
       {isLoading ? (
