@@ -10,7 +10,7 @@ import right from "assets/right.svg";
 import { Helmet } from "react-helmet";
 import { ErrorBox } from "../components/lib";
 
-export const UnauthedApp = () => {
+export default () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   return (
@@ -23,7 +23,11 @@ export const UnauthedApp = () => {
       <ShadowCard>
         <Title>{isRegister ? "请注册" : "请登录"}</Title>
         <ErrorBox error={error} />
-        {isRegister ? <RegisterScreen onError={setError} /> : <LoginScreen />}
+        {isRegister ? (
+          <RegisterScreen onError={setError} />
+        ) : (
+          <LoginScreen onError={setError} />
+        )}
         <Divider />
         <Button
           type={"link"}

@@ -11,7 +11,7 @@ import { resetRoute } from "./utils";
 import { ProjectModal } from "./screens/project-list/project-modal";
 import { ProjectPopover } from "./components/project-popover";
 
-export const AuthedApp = () => {
+export default () => {
   return (
     <Container>
       <PageHeader />
@@ -36,7 +36,7 @@ const PageHeader = () => {
           <SoftwareLogo width={"18rem"} color={"rgb(38,132,255)"} />
         </ButtonNoPadding>
         <ProjectPopover />
-        <h2>成员</h2>
+        <span>成员</span>
       </HeaderLeft>
       <HeaderRight>
         <Dropdown

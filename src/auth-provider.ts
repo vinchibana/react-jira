@@ -5,6 +5,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 export const getToken = () => window.localStorage.getItem(localStorageKey);
 
 // 从 response.json 中解构 user, 以及解构时 ({user}) 的类型写法
+// 在 application 本地存储中存储登录后的 token
 export const handelUserResponse = ({ user }: { user: User }) => {
   window.localStorage.setItem(localStorageKey, user.token || "");
   return user;
