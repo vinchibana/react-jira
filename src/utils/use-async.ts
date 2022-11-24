@@ -1,3 +1,7 @@
+/*
+ * 异步操作 hook
+ * 用于发起请求（run）、返回并设置数据（setData）、设置状态（setState）、显示状态（loading、error 等）
+ */
 import { useState } from "react";
 
 interface State<D> {
@@ -15,7 +19,7 @@ const defaultInitialState: State<null> = {
 export const useAsync = <D>(initialState?: State<D>) => {
   const [state, setState] = useState<State<D>>({
     ...defaultInitialState,
-    ...initialState,
+    ...initialState, // 用传入的初始 state 覆盖默认值
   });
 
   const setData = (data: D) =>
@@ -40,12 +44,15 @@ export const useAsync = <D>(initialState?: State<D>) => {
     if (!promise || !promise.then) {
       throw new Error("请传入 Promise 类型数据");
     }
+
     setRetry(() => () => {
       if (runConfig?.retry()) {
         run(runConfig?.retry(), runConfig);
       }
     });
+
     setState({ ...state, stat: "loading" });
+
     return promise
       .then((data) => {
         setData(data);

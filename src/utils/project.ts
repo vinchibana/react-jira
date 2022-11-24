@@ -55,6 +55,7 @@ export const useAddProject = () => {
         method: "POST",
         data: params,
       }),
+    // 使主动查询失效
     { onSuccess: () => queryClient.invalidateQueries("projects") }
   );
 };
@@ -67,5 +68,17 @@ export const useProject = (id?: number) => {
     {
       enabled: Boolean(id),
     }
+  );
+};
+
+export const useDeleteProject = () => {
+  const client = useHttp();
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ id }: { id: number }) =>
+      client(`projects/${id}`, {
+        method: "DELETE",
+      }),
+    { onSuccess: () => queryClient.invalidateQueries("projects") }
   );
 };

@@ -12,6 +12,7 @@ export interface AuthForm {
   password: string;
 }
 
+// 刷新页面后重新获取用户身份，否则将被重新登录
 const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();

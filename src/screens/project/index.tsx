@@ -6,6 +6,8 @@ import { EpicScreen } from "../epic";
 import styled from "@emotion/styled";
 import { Menu } from "antd";
 
+// 路径拆分为数组
+// http://localhost:3000/projects/1 拆分为 ['', 'projects', '1']，取中间值
 const useRouteType = () => {
   const units = useLocation().pathname.split("/");
   return units[units.length - 1];
@@ -30,6 +32,8 @@ export const ProjectScreen = () => {
         <Routes>
           <Route path={"kanban"} element={<KanbanScreen />} />
           <Route path={"epic"} element={<EpicScreen />} />
+          {/* 默认高亮索引 */}
+          <Route index element={<KanbanScreen />} />
         </Routes>
       </Main>
     </Container>

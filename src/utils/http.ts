@@ -9,17 +9,19 @@ interface Config extends RequestInit {
   data?: object;
 }
 
+// 封装 fetch 请求
 export const http = async (
   endpoint: string,
   { data, token, headers, ...customConfig }: Config = {}
 ) => {
+  // GET 请求时请求头添加 token 认证
   const config = {
     method: "GET",
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": data ? "application/json" : "",
     },
-    ...customConfig,
+    ...customConfig, // 继承自 RequestInit 的其他配置
   };
   if (config.method.toUpperCase() === "GET") {
     endpoint += `?${qs.stringify(data)}`;
@@ -45,8 +47,11 @@ export const http = async (
 };
 
 export const useHttp = () => {
+  // 从 AuthContext 中解构 user，并添加至 http 请求
   const { user } = useAuth();
-  // tuple
+  // type myType = Parameters<typeof myFunction>
+  // Equivalent to a tuple type of:
+  // type myType = [ a: string, b: string ]
   return (...[endpoint, config]: Parameters<typeof http>) =>
     http(endpoint, { ...config, token: user?.token });
 };
