@@ -7,6 +7,7 @@ import { useTask } from "../../utils/task";
 export const useProjectIdInUrl = () => {
   const { pathname } = useLocation();
   const id = pathname.match(/projects\/(\d+)/)?.[1];
+
   return Number(id);
 };
 
@@ -14,9 +15,11 @@ export const useProjectInUrl = () => useProject(useProjectIdInUrl());
 
 export const useKanbanSearchParams = () => ({ projectId: useProjectIdInUrl() });
 
+// 用途
 export const useTasksSearchParams = () => {
   const [param] = useUrlQueryParam(["name", "typeId", "processorId", "tagId"]);
   const projectId = useProjectIdInUrl();
+
   return useMemo(
     () => ({
       projectId,
@@ -34,12 +37,15 @@ export const useTaskModal = () => {
     "editingTaskId",
   ]);
   const { data: editingTask, isLoading } = useTask(Number(editingTaskId));
+
+  // 点击任务卡片时的动作，将 url 的 editingTaskId 设置为传入的 id
   const startEdit = useCallback(
     (id: number) => {
       setEditingTaskId({ editingTaskId: id });
     },
     [setEditingTaskId]
   );
+
   const close = useCallback(() => {
     setEditingTaskId({ editingTaskId: "" });
   }, [setEditingTaskId]);

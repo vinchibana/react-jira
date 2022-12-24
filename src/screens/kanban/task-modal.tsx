@@ -5,6 +5,7 @@ import { useDeleteTask, useEditTask } from "../../utils/task";
 import { Modal, Form, Input, Button } from "antd";
 import { UserSelect } from "../../components/user-select";
 import { TaskTypeSelect } from "../../components/task-type-select";
+import { EpicSelect } from "../../components/epic-select";
 
 const layout = {
   labelCol: { span: 8 },
@@ -13,18 +14,21 @@ const layout = {
 
 export const TaskModal = () => {
   const [form] = useForm();
+  // 获取
   const { editingTaskId, editingTask, close } = useTaskModal();
   const { mutateAsync: editTask, isLoading: editLoading } = useEditTask();
+  const { mutateAsync: deleteTask } = useDeleteTask();
+
   const onCancel = () => {
     close();
     form.resetFields();
   };
+
   const onOk = async () => {
     await editTask({ ...editingTask, ...form.getFieldsValue() });
     close();
   };
 
-  const { mutateAsync: deleteTask } = useDeleteTask();
   const startDelete = () => {
     close();
     Modal.confirm({
@@ -59,6 +63,9 @@ export const TaskModal = () => {
           rules={[{ required: true, message: "请输入任务名" }]}
         >
           <Input />
+        </Form.Item>
+        <Form.Item label={"任务组"} name={"epic"}>
+          <EpicSelect defaultOptionName={"任务组"} />
         </Form.Item>
         <Form.Item label={"经办人"} name={"processorId"}>
           <UserSelect defaultOptionName={"经办人"} />

@@ -7,11 +7,11 @@ import styled from "@emotion/styled";
 import { ErrorBox } from "../../components/lib";
 
 export const ProjectModal = () => {
+  // 获取模态框开关状态、close 函数、loading 状态、正在编辑的 project 对象
   const { projectModalOpen, close, isLoading, editingProject } =
     useProjectModal();
   const useMutateProject = editingProject ? useEditProject : useAddProject;
   const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject();
-
   const title = editingProject ? "编辑项目" : "创建项目";
 
   // 调用 useForm 钩子后会得到一个包含各种 form 操作函数的对象，称为 Form 实例
